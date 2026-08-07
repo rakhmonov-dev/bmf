@@ -24,6 +24,9 @@ import FaqsAdminPage from './pages/admin/FaqsAdminPage';
 import MessagesAdminPage from './pages/admin/MessagesAdminPage';
 import AiSupportAdminPage from './pages/admin/AiSupportAdminPage';
 import SettingsAdminPage from './pages/admin/SettingsAdminPage';
+import GalleryAdminPage from './pages/admin/GalleryAdminPage';
+import NotFoundPage from './pages/NotFoundPage';
+import { ADMIN_LOGIN_PATH } from './config/adminPath';
 
 export default function App() {
   return (
@@ -39,8 +42,8 @@ export default function App() {
           <Route path="/test" element={<TestPage />} />
         </Route>
 
-        {/* ---------------------- ADMIN LOGIN (layout'siz) ---------------------- */}
-        <Route path="/admin/login" element={<AdminLoginPage />} />
+        {/* ---------------------- ADMIN LOGIN (layout'siz, maxfiy yo'l) ---------------------- */}
+        <Route path={ADMIN_LOGIN_PATH} element={<AdminLoginPage />} />
 
         {/* ---------------------- ADMIN PANEL (himoyalangan) ---------------------- */}
         <Route element={<ProtectedRoute />}>
@@ -54,27 +57,15 @@ export default function App() {
             <Route path="faqs" element={<FaqsAdminPage />} />
             <Route path="messages" element={<MessagesAdminPage />} />
             <Route path="ai-support" element={<AiSupportAdminPage />} />
+            <Route path="gallery" element={<GalleryAdminPage />} />
             <Route path="settings" element={<SettingsAdminPage />} />
           </Route>
         </Route>
 
         {/* ---------------------- 404 ---------------------- */}
+        <Route path="/404" element={<NotFoundPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
-  );
-}
-
-function NotFoundPage() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 text-center px-6">
-      <div>
-        <h1 className="text-5xl font-display font-semibold text-ink-900 mb-3">404</h1>
-        <p className="text-slate-500 mb-6">Bu sahifa topilmadi.</p>
-        <a href="/" className="inline-flex items-center gap-2 bg-gold-400 hover:bg-gold-300 text-ink-900 font-semibold px-6 py-3 rounded-full transition-colors">
-          Bosh sahifaga qaytish
-        </a>
-      </div>
-    </div>
   );
 }

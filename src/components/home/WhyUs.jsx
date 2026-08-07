@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Target, Users2, BadgeCheck } from 'lucide-react';
+import { Target, Users2, Award } from 'lucide-react';
 import CefrFoundation from '../shared/CefrFoundation';
 import { SectionHeading } from '../shared/Common';
 
@@ -10,14 +10,14 @@ const REASONS = [
     description: "CEFR standarti asosida — har bir bosqichda qayerda turganingizni va nimaga erishishingizni aniq bilasiz.",
   },
   {
+    icon: Award,
+    title: 'IELTS tayyorgarligi',
+    description: "Imtihonning barcha 4 qismi bo'yicha maqsadli mashg'ulotlar va real format mock-testlar bilan tayyorlanasiz.",
+  },
+  {
     icon: Users2,
     title: 'Kichik guruhlar',
     description: "8-12 kishilik guruhlar — har bir o'quvchiga individual e'tibor berish imkonini beradi.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Tajribali o'qituvchilar",
-    description: "Xalqaro sertifikatlarga ega, o'z sohasida yillar davomida tajriba orttirgan mutaxassislar.",
   },
 ];
 

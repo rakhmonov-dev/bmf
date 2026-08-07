@@ -86,11 +86,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-slate-500">
+        <div className="border-t border-white/10 mt-12 pt-6 text-center text-xs text-slate-500">
           <span>© {new Date().getFullYear()} BMG School. Barcha huquqlar himoyalangan.</span>
-          <Link to="/admin/login" className="hover:text-slate-300 transition-colors">
-            Administrator
-          </Link>
         </div>
       </div>
     </footer>

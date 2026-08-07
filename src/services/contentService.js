@@ -93,6 +93,35 @@ export async function deleteTestimonial(id) {
   await api.delete(`/testimonials/${id}`);
 }
 
+// ---------------------- GALLERY ----------------------
+export async function getGalleryImages() {
+  const { data } = await api.get('/gallery');
+  return data.data;
+}
+
+export async function getAllGalleryImagesAdmin() {
+  const { data } = await api.get('/gallery/admin/all');
+  return data.data;
+}
+
+export async function createGalleryImage(formData) {
+  const { data } = await api.post('/gallery', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data.data;
+}
+
+export async function updateGalleryImage(id, formData) {
+  const { data } = await api.put(`/gallery/${id}`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data.data;
+}
+
+export async function deleteGalleryImage(id) {
+  await api.delete(`/gallery/${id}`);
+}
+
 // ---------------------- FAQS ----------------------
 export async function getFaqs() {
   const { data } = await api.get('/faqs');

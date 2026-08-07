@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, BookOpen, Users2, FileQuestion, ClipboardList,
-  Quote, HelpCircle, Mail, Settings, Bot, LogOut, GraduationCap,
+  Quote, HelpCircle, Mail, Settings, Bot, LogOut, GraduationCap, Images,
 } from 'lucide-react';
 import { useAuthStore } from '../../store/authStore';
 
@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { to: '/admin/teachers', label: "O'qituvchilar", icon: Users2 },
   { to: '/admin/questions', label: 'Test savollari', icon: FileQuestion },
   { to: '/admin/testimonials', label: 'Fikrlar', icon: Quote },
+  { to: '/admin/gallery', label: 'Galereya', icon: Images },
   { to: '/admin/faqs', label: 'FAQ', icon: HelpCircle },
   { to: '/admin/messages', label: 'Xabarlar', icon: Mail },
   { to: '/admin/ai-support', label: 'AI Support', icon: Bot },

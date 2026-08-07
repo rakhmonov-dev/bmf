@@ -14,11 +14,19 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
+  // Faqat bosh sahifada header tepada shaffof boshlanadi (Hero fonining
+  // ustida). Boshqa har qanday sahifada fon oq bo'lgani uchun header doim
+  // to'liq rangli bo'lishi kerak — aks holda oq fon ustida oq matn
+  // ko'rinmay qolardi.
+  const isHomePage = location.pathname === '/';
+  const shouldBeSolid = !isHomePage || isScrolled;
+
   useEffect(() => {
+    if (!isHomePage) return;
     const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isHomePage]);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -27,7 +35,7 @@ export default function Header() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+        shouldBeSolid
           ? 'bg-ink-900/95 backdrop-blur-md shadow-lg shadow-ink-900/10'
           : 'bg-transparent'
       }`}
