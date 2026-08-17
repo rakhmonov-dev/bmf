@@ -84,7 +84,7 @@ export default function ApplicationsPage() {
       />
 
       <div className="flex flex-wrap items-center gap-3 mb-6">
-        <form onSubmit={handleSearchSubmit} className="relative flex-1 min-w-[220px] max-w-xs">
+        <form onSubmit={handleSearchSubmit} className="relative flex-1 min-w-[220px] w-full sm:w-auto sm:max-w-xs">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             value={search}
@@ -112,7 +112,8 @@ export default function ApplicationsPage() {
         <EmptyState title="Arizalar topilmadi" description="Filtrlarni o'zgartirib ko'ring." />
       ) : (
         <div className="bg-white rounded-2xl border border-slate-100 overflow-hidden">
-          <table className="w-full text-sm">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[760px] text-sm">
             <thead className="bg-slate-50 text-slate-500 text-xs uppercase tracking-wide">
               <tr>
                 <th className="text-left px-5 py-3 font-medium">Ism</th>
@@ -174,7 +175,8 @@ export default function ApplicationsPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
+            </table>
+          </div>
 
           {pagination.totalPages > 1 && (
             <div className="flex items-center justify-between px-5 py-4 border-t border-slate-100">

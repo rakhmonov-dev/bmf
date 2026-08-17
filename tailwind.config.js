@@ -31,6 +31,23 @@ export default {
           700: '#8F5A20',
           800: '#6B4318',
           900: '#4A2F10',
+          950: '#2E1D0A',
+        },
+        // Issiq coral — "Funny" galereya kategoriyasi uchun, quvnoq va
+        // bolalarcha, lekin asosiy gold urg'usi bilan raqobatlashmaydigan
+        // darajada farqli (pushti-qizg'ish spektr, oltin-sariq emas)
+        coral: {
+          50: '#FFF1EE',
+          100: '#FFE1DA',
+          200: '#FFC2B3',
+          300: '#FF9C85',
+          400: '#FF7A5C',
+          500: '#F5573A', // asosiy "Funny" rangi
+          600: '#D93F24',
+          700: '#B22F1A',
+          800: '#8A2415',
+          900: '#5C1810',
+          950: '#380E09',
         },
         // Neytral kulrang-ko'k — matn va fonlar uchun (Tailwind default gray
         // o'rniga, sovuqroq va brendga mos)

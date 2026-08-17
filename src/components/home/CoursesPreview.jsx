@@ -24,7 +24,7 @@ export default function CoursesPreview() {
   }, []);
 
   return (
-    <section className="section-padding bg-white">
+    <section className="section-padding bg-emerald-50">
       <div className="container-wide">
         <SectionHeading
           eyebrow="Kurslarimiz"

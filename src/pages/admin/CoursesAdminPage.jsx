@@ -16,7 +16,7 @@ const ICON_OPTIONS = ['BookOpen', 'MessageCircle', 'TrendingUp', 'Award', 'Brief
 
 const EMPTY_FORM = {
   title: '', description: '', cefrLevelFrom: 'A1', cefrLevelTo: 'A2',
-  durationMonths: 6, lessonsPerWeek: 3, priceAmount: '', pricePeriod: 'oylik',
+  durationMonths: 6, lessonsPerWeek: 3, priceAmount: '', originalPrice: '', pricePeriod: 'oylik',
   groupSizeMax: '', iconName: 'BookOpen', teacherId: '', isActive: true,
 };
 
@@ -62,6 +62,7 @@ export default function CoursesAdminPage() {
       durationMonths: course.duration_months,
       lessonsPerWeek: course.lessons_per_week,
       priceAmount: course.price_amount,
+      originalPrice: course.original_price || '',
       pricePeriod: course.price_period,
       groupSizeMax: course.group_size_max || '',
       iconName: course.icon_name || 'BookOpen',
@@ -80,6 +81,7 @@ export default function CoursesAdminPage() {
         durationMonths: Number(formData.durationMonths),
         lessonsPerWeek: Number(formData.lessonsPerWeek),
         priceAmount: Number(formData.priceAmount),
+        originalPrice: formData.originalPrice ? Number(formData.originalPrice) : null,
         groupSizeMax: formData.groupSizeMax ? Number(formData.groupSizeMax) : null,
         teacherId: formData.teacherId ? Number(formData.teacherId) : null,
       };
@@ -195,7 +197,7 @@ export default function CoursesAdminPage() {
             />
           </FormField>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Boshlang'ich daraja">
               <select
                 value={formData.cefrLevelFrom}
@@ -216,7 +218,7 @@ export default function CoursesAdminPage() {
             </FormField>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <FormField label="Davomiyligi (oy)">
               <input
                 type="number" min={1} required
@@ -243,7 +245,7 @@ export default function CoursesAdminPage() {
             </FormField>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Narx (so'm) *">
               <input
                 type="number" min={0} required
@@ -252,6 +254,21 @@ export default function CoursesAdminPage() {
                 className="input-base"
               />
             </FormField>
+            <FormField label="Asl narx (chegirmasiz)">
+              <input
+                type="number" min={0}
+                placeholder="Ixtiyoriy"
+                value={formData.originalPrice}
+                onChange={(e) => setFormData((p) => ({ ...p, originalPrice: e.target.value }))}
+                className="input-base"
+              />
+            </FormField>
+          </div>
+          <p className="text-xs text-slate-400 -mt-2">
+            Asl narx kiritilsa, saytda chegirma (chiziqcha bilan) ko'rsatiladi. Bo'sh qoldirsangiz, chegirma ko'rsatilmaydi.
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Narx davri">
               <select
                 value={formData.pricePeriod}
@@ -262,9 +279,6 @@ export default function CoursesAdminPage() {
                 <option value="kurs_uchun">Kurs uchun</option>
               </select>
             </FormField>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
             <FormField label="Ikonka">
               <select
                 value={formData.iconName}
@@ -274,6 +288,9 @@ export default function CoursesAdminPage() {
                 {ICON_OPTIONS.map((icon) => <option key={icon} value={icon}>{icon}</option>)}
               </select>
             </FormField>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="O'qituvchi">
               <select
                 value={formData.teacherId}

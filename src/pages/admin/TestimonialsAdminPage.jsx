@@ -156,7 +156,7 @@ export default function TestimonialsAdminPage() {
           <FormField label="Fikr matni *">
             <textarea required rows={3} value={formData.quoteText} onChange={(e) => setFormData((p) => ({ ...p, quoteText: e.target.value }))} className="input-base resize-none" />
           </FormField>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Erishgan daraja">
               <select value={formData.achievedLevel} onChange={(e) => setFormData((p) => ({ ...p, achievedLevel: e.target.value }))} className="input-base">
                 <option value="">Tanlanmagan</option>

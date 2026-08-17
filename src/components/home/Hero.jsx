@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
-import Button from '../shared/Button';
-import CefrFoundation from '../shared/CefrFoundation';
+import { Sparkles } from 'lucide-react';
+import HeroTestWidget from './HeroTestWidget';
 import { getPublicSettings } from '../../services/contentService';
 
 export default function Hero() {
@@ -14,12 +13,15 @@ export default function Hero() {
 
   return (
     <section className="relative bg-ink-900 overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
-      {/* Fon dekoratsiyasi — yumshoq nur dog'lari */}
+      {/* Fon dekoratsiyasi — yumshoq nur dog'lari, avvalgidan bir oz kattaroq va yorqinroq */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gold-400/10 rounded-full blur-3xl animate-float-slow" />
-        <div className="absolute top-1/3 -left-32 w-80 h-80 bg-ink-500/20 rounded-full blur-3xl" />
+        <div className="absolute -top-40 -right-40 w-[32rem] h-[32rem] bg-gold-400/[0.14] rounded-full blur-3xl animate-float-slow" />
+        <div className="absolute top-1/3 -left-32 w-96 h-96 bg-ink-500/25 rounded-full blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-gold-500/[0.08] rounded-full blur-3xl" />
       </div>
       <div className="absolute inset-0 bg-noise opacity-30 pointer-events-none" />
+      {/* Yuqoridan pastga yumshoq vinyette — matnni fondan biroz ajratib turadi */}
+      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-ink-950/40 to-transparent pointer-events-none" />
 
       <div className="container-wide px-6 md:px-10 lg:px-16 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -41,7 +43,8 @@ export default function Hero() {
               transition={{ delay: 0.1 }}
               className="text-4xl md:text-5xl lg:text-[3.4rem] font-display font-semibold text-white leading-[1.1] text-balance"
             >
-              {settings.hero_title || 'Ingliz tilini Samarqandda professional darajada o\'rganing'}
+              {settings.hero_title ||
+                "BMG School'da yoki ingliz tilini o'rganasiz, yoki pulingizni qaytarib beramiz"}
             </motion.h1>
 
             <motion.p
@@ -51,33 +54,18 @@ export default function Hero() {
               className="text-slate-300 text-lg mt-6 max-w-lg leading-relaxed text-balance"
             >
               {settings.hero_subtitle ||
-                "Boshlang'ichdan C1 darajasigacha — tajribali o'qituvchilar, aniq metodika va real natijalar"}
+                "Boshlang'ichdan C1 darajasigacha va IELTS imtihoniga tayyorgarlik — tajribali o'qituvchilar, aniq metodika va real natijalar"}
             </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex flex-wrap gap-4 mt-9"
-            >
-              <Button to="/test" size="lg">
-                {settings.hero_cta_text || 'Darajangizni bilib oling'}
-                <ArrowRight className="w-4 h-4" />
-              </Button>
-              <Button to="/kurslar" variant="outline" size="lg" className="!border-white/20 !text-white hover:!bg-white/10">
-                Kurslarni ko'rish
-              </Button>
-            </motion.div>
 
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="flex items-center gap-8 mt-12 pt-8 border-t border-white/10"
+              className="flex items-center gap-8 mt-10 pt-8 border-t border-white/10"
             >
               <Stat value={settings.stat_students || '450+'} label="o'quvchi" />
-              <Stat value={settings.stat_teachers || '4'} label="o'qituvchi" />
-              <Stat value={settings.stat_years || '5'} label="yillik tajriba" />
+              <Stat value={settings.stat_teachers || '2'} label="o'qituvchi" />
+              <Stat value={settings.stat_years || '12'} label="yillik tajriba" />
             </motion.div>
           </div>
 
@@ -85,14 +73,8 @@ export default function Hero() {
             initial={{ opacity: 0, x: 24 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="hidden lg:block"
           >
-            <div className="bg-white/[0.03] border border-white/10 rounded-2xl p-8 backdrop-blur-sm">
-              <p className="text-slate-400 text-xs uppercase tracking-widest mb-6 text-center">
-                CEFR darajalari
-              </p>
-              <CefrFoundation compact />
-            </div>
+            <HeroTestWidget />
           </motion.div>
         </div>
       </div>

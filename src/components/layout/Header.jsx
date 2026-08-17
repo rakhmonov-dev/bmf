@@ -75,15 +75,6 @@ export default function Header() {
             ))}
           </div>
 
-          <div className="hidden lg:block">
-            <Link
-              to="/test"
-              className="inline-flex items-center gap-2 bg-gold-400 hover:bg-gold-300 text-ink-900 font-semibold text-sm px-5 py-2.5 rounded-full transition-all hover:scale-105 shadow-lg shadow-gold-400/20"
-            >
-              Darajangizni bilib oling
-            </Link>
-          </div>
-
           <button
             className="lg:hidden text-white p-2"
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -110,12 +101,6 @@ export default function Header() {
                 {link.label}
               </NavLink>
             ))}
-            <Link
-              to="/test"
-              className="mt-3 inline-flex items-center justify-center gap-2 bg-gold-400 text-ink-900 font-semibold text-sm px-5 py-3 rounded-full"
-            >
-              Darajangizni bilib oling
-            </Link>
           </div>
         </div>
       )}

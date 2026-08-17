@@ -17,7 +17,7 @@ const REASONS = [
   {
     icon: Users2,
     title: 'Kichik guruhlar',
-    description: "8-12 kishilik guruhlar — har bir o'quvchiga individual e'tibor berish imkonini beradi.",
+    description: "8-10 kishilik guruhlar — har bir o'quvchiga individual e'tibor berish imkonini beradi.",
   },
 ];
 

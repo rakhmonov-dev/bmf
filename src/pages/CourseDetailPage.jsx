@@ -4,7 +4,7 @@ import { getCourseIcon } from '../utils/courseIcons';
 import { ArrowLeft, Clock, Users, Calendar, CheckCircle2 } from 'lucide-react';
 import { getCourseBySlug } from '../services/contentService';
 import { LoadingSpinner } from '../components/shared/Common';
-import { formatPrice, CEFR_DISPLAY } from '../utils/formatters';
+import { formatPrice, calculateDiscountPercent, CEFR_DISPLAY } from '../utils/formatters';
 import Button from '../components/shared/Button';
 
 function CourseIcon({ name, className }) {
@@ -103,6 +103,16 @@ export default function CourseDetailPage() {
           </div>
 
           <div className="bg-white rounded-2xl border border-slate-100 shadow-xl shadow-ink-900/5 p-7 self-start">
+            {course.original_price && Number(course.original_price) > Number(course.price_amount) && (
+              <div className="flex items-center gap-2 mb-2">
+                <span className="text-sm text-slate-400 line-through">
+                  {formatPrice(course.original_price)}
+                </span>
+                <span className="text-xs font-bold text-gold-700 bg-gold-100 px-2 py-0.5 rounded-full">
+                  -{calculateDiscountPercent(course.original_price, course.price_amount)}%
+                </span>
+              </div>
+            )}
             <p className="font-display font-semibold text-2xl text-ink-900 mb-1">
               {formatPrice(course.price_amount)}
               <span className="text-sm text-slate-400 font-sans">

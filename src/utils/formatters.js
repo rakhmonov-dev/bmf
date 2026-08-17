@@ -8,6 +8,19 @@ export function formatPrice(amount) {
 }
 
 /**
+ * Asl narx va chegirmali narx asosida foiz chegirmasini hisoblaydi.
+ * originalPrice bo'lmasa yoki priceAmount'dan kichik/teng bo'lsa,
+ * chegirma yo'q deb hisoblanadi (null qaytaradi).
+ */
+export function calculateDiscountPercent(originalPrice, currentPrice) {
+  if (!originalPrice || !currentPrice) return null;
+  const original = Number(originalPrice);
+  const current = Number(currentPrice);
+  if (original <= current) return null;
+  return Math.round(((original - current) / original) * 100);
+}
+
+/**
  * CEFR darajasini foydalanuvchiga tushunarli ko'rinishga aylantiradi.
  */
 export const CEFR_DISPLAY = {

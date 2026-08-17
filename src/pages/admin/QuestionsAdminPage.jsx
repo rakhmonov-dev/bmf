@@ -171,7 +171,7 @@ export default function QuestionsAdminPage() {
             />
           </FormField>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <FormField label="A varianti *">
               <input required value={formData.optionA} onChange={(e) => setFormData((p) => ({ ...p, optionA: e.target.value }))} className="input-base" />
             </FormField>
@@ -186,7 +186,7 @@ export default function QuestionsAdminPage() {
             </FormField>
           </div>
 
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <FormField label="To'g'ri javob">
               <select value={formData.correctOption} onChange={(e) => setFormData((p) => ({ ...p, correctOption: e.target.value }))} className="input-base">
                 <option value="a">A</option>

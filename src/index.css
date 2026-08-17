@@ -57,6 +57,14 @@
     text-wrap: balance;
   }
 
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
   .bg-noise::before {
     content: '';
     position: absolute;

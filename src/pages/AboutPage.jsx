@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { Award } from 'lucide-react';
 import { getTeachers, getPublicSettings } from '../services/contentService';
 import { LoadingSpinner } from '../components/shared/Common';
-import GallerySection from '../components/shared/GallerySection';
 
 export default function AboutPage() {
   const [teachers, setTeachers] = useState([]);
@@ -93,8 +92,6 @@ export default function AboutPage() {
           </div>
         )}
       </div>
-
-      <GallerySection />
     </div>
   );
 }

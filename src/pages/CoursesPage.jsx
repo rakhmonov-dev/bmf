@@ -95,10 +95,17 @@ export default function CoursesPage() {
                 </div>
 
                 <div className="flex items-center justify-between pt-4 border-t border-slate-200">
-                  <span className="font-display font-semibold text-ink-900">
-                    {formatPrice(course.price_amount)}
-                    <span className="text-xs text-slate-400 font-sans"> /oy</span>
-                  </span>
+                  <div className="flex items-baseline gap-2">
+                    <span className="font-display font-semibold text-ink-900">
+                      {formatPrice(course.price_amount)}
+                      <span className="text-xs text-slate-400 font-sans"> /oy</span>
+                    </span>
+                    {course.original_price && Number(course.original_price) > Number(course.price_amount) && (
+                      <span className="text-xs text-slate-400 line-through">
+                        {formatPrice(course.original_price)}
+                      </span>
+                    )}
+                  </div>
                   <Button to={`/kurslar/${course.slug}`} variant="ghost" size="sm" className="!px-3">
                     <ArrowRight className="w-4 h-4" />
                   </Button>

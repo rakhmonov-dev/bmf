@@ -4,7 +4,7 @@ import Button from '../shared/Button';
 
 export default function CtaSection() {
   return (
-    <section className="section-padding bg-white">
+    <section className="section-padding bg-ink-50">
       <div className="container-narrow">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
