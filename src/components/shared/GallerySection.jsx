@@ -10,7 +10,7 @@ import { getGalleryImages } from '../../services/contentService';
 import { LoadingSpinner } from './Common';
 
 // Har bir slayd shu vaqt davomida ko'rsatiladi (talab: 2000ms)
-const AUTOPLAY_MS = 2000;
+const AUTOPLAY_MS = 3000;
 // Fon gradienti kategoriya almashganda shuncha vaqt davomida bir-biriga
 // eriydi (crossfade) — talabga ko'ra kamida 800-1000ms
 const BG_CROSSFADE_MS = 950;
@@ -101,6 +101,7 @@ export default function GallerySection() {
   const autoplayRef = useRef(null);
   const touchResumeRef = useRef(null);
   const heroRef = useRef(null);
+  const heroVideoRef = useRef(null);
 
   useEffect(() => {
     getGalleryImages()
@@ -158,16 +159,34 @@ export default function GallerySection() {
   }, [activeImages.length]);
 
   // Avtomatik aylanish — sichqoncha ustida, teginilganda yoki lightbox
-  // ochiq bo'lganda to'xtaydi
+  // ochiq bo'lganda to'xtaydi. Video slaydlar bunga kirmaydi — ular
+  // pastdagi <video onEnded> orqali o'zi tugagach keyingisiga o'tadi,
+  // shu bilan video hech qachon kesilmasdan to'liq ko'rsatiladi.
+  const currentMediaType = activeImages[activeIndex]?.media_type;
+
   useEffect(() => {
     if (isPaused || lightboxOpen || activeImages.length <= 1) return;
+    if (currentMediaType === 'video') return;
 
     autoplayRef.current = setInterval(() => {
       setActiveIndex((prev) => (prev + 1) % activeImages.length);
     }, AUTOPLAY_MS);
 
     return () => clearInterval(autoplayRef.current);
-  }, [isPaused, lightboxOpen, activeImages.length]);
+  }, [isPaused, lightboxOpen, activeImages.length, currentMediaType]);
+
+  // Video slayd sichqoncha hover/teginish/lightbox tufayli "pauza"
+  // qilinganda, haqiqiy video ijrosi ham to'xtaydi (aks holda video orqa
+  // fonda ijro bo'lib, keyin foydalanuvchi bilmagan holda tugab ketardi)
+  useEffect(() => {
+    const v = heroVideoRef.current;
+    if (!v) return;
+    if (isPaused || lightboxOpen) {
+      v.pause();
+    } else {
+      v.play().catch(() => {});
+    }
+  }, [isPaused, lightboxOpen, activeIndex]);
 
   useEffect(() => {
     function handleKeyDown(e) {
@@ -209,7 +228,7 @@ export default function GallerySection() {
   }, [activeIndex, activeCategory, progressValue]);
 
   useAnimationFrame((time) => {
-    if (isPaused || lightboxOpen || activeImages.length <= 1) {
+    if (isPaused || lightboxOpen || activeImages.length <= 1 || currentMediaType === 'video') {
       progressStartRef.current = null;
       return;
     }
@@ -290,6 +309,10 @@ export default function GallerySection() {
           <span className="text-gold-600 text-xs font-semibold uppercase tracking-widest mb-3 block">
             Hayotimizdan lavhalar
           </span>
+          <h2 className="text-3xl font-display font-semibold text-ink-900 mb-3 flex items-center justify-center gap-2.5">
+            <Images className="w-7 h-7 text-gold-500" />
+            Galereya
+          </h2>
           <p className="text-slate-500">Darslarimiz va o'quvchilarimizning muvaffaqiyatlaridan lavhalar</p>
         </div>
 
@@ -409,11 +432,17 @@ export default function GallerySection() {
                 >
                   {currentImage.media_type === 'video' ? (
                     <video
+                      ref={heroVideoRef}
+                      key={currentImage.id}
                       src={currentImage.image_url}
                       muted
-                      loop
                       playsInline
                       autoPlay
+                      onTimeUpdate={(e) => {
+                        const v = e.currentTarget;
+                        if (v.duration) progressValue.set((v.currentTime / v.duration) * 100);
+                      }}
+                      onEnded={() => goTo(activeIndex + 1)}
                       className="w-full h-full object-contain"
                     />
                   ) : (
