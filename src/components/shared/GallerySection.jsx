@@ -126,15 +126,20 @@ export default function GallerySection() {
   }, []);
 
   const categories = useMemo(() => {
-    const found = new Set(
-      images
-        .map((img) => img.category)
-        .filter((cat) => cat && !SPECIAL_PURPOSE_CATEGORIES.has(cat))
-    );
-    const ordered = PREFERRED_CATEGORY_ORDER.filter((cat) => found.has(cat));
-    const extras = [...found].filter((cat) => !PREFERRED_CATEGORY_ORDER.includes(cat));
-    return [...ordered, ...extras];
-  }, [images]);
+  const found = new Set(
+    images
+      .map((img) => img.category || 'Kategoriyasiz')
+      .filter((cat) => !SPECIAL_PURPOSE_CATEGORIES.has(cat))
+  );
+
+  const ordered = PREFERRED_CATEGORY_ORDER.filter((cat) => found.has(cat));
+
+  const extras = [...found].filter(
+    (cat) => !PREFERRED_CATEGORY_ORDER.includes(cat)
+  );
+
+  return [...ordered, ...extras];
+}, [images]);
 
   useEffect(() => {
     if (categories.length > 0 && !activeCategory) {
@@ -143,9 +148,16 @@ export default function GallerySection() {
   }, [categories, activeCategory]);
 
   const activeImages = useMemo(
-    () => images.filter((img) => img.category === activeCategory),
-    [images, activeCategory]
-  );
+  () =>
+    images.filter((img) => {
+      if (activeCategory === 'Kategoriyasiz') {
+        return !img.category;
+      }
+
+      return img.category === activeCategory;
+    }),
+  [images, activeCategory]
+);
 
   // Kategoriya almashsa, slaydshouni boshiga qaytaramiz
   useEffect(() => {
