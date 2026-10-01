@@ -15,9 +15,9 @@ export default function Hero() {
     <section className="relative bg-ink-900 overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
       {/* Fon dekoratsiyasi — yumshoq nur dog'lari, avvalgidan bir oz kattaroq va yorqinroq */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-[32rem] h-[32rem] bg-gold-400/[0.14] rounded-full blur-3xl animate-float-slow" />
-        <div className="absolute top-1/3 -left-32 w-96 h-96 bg-ink-500/25 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-gold-500/[0.08] rounded-full blur-3xl" />
+        <div className="absolute -top-20 -right-20 w-64 h-64 md:-top-40 md:-right-40 md:w-[32rem] md:h-[32rem] bg-gold-400/[0.12] rounded-full blur-2xl md:blur-3xl md:animate-float-slow" />
+        <div className="hidden md:block absolute top-1/3 -left-32 w-96 h-96 bg-ink-500/25 rounded-full blur-3xl" />
+        <div className="hidden md:block absolute bottom-0 right-1/4 w-72 h-72 bg-gold-500/[0.08] rounded-full blur-3xl" />
       </div>
       <div className="absolute inset-0 bg-noise opacity-30 pointer-events-none" />
       {/* Yuqoridan pastga yumshoq vinyette — matnni fondan biroz ajratib turadi */}

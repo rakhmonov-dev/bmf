@@ -87,3 +87,39 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #8B92AF;
 }
+
+/* Performance: animatsiya transform orqali GPU-friendly ishlaydi. */
+@keyframes gallery-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+.gallery-progress {
+  transform: scaleX(0);
+  animation-name: gallery-progress;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+  will-change: transform;
+}
+
+/* Ekrandan tashqaridagi katta sectionlarni brauzer scroll yaqinlashguncha chizmaydi. */
+main > section:not(:first-child) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+@media (max-width: 767px) {
+  /* Mobil GPU uchun eng qimmat dekorativ filterlarni yengillashtiramiz. */
+  .bg-noise::before { display: none; }
+  .backdrop-blur-md { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+  .backdrop-blur-sm { backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

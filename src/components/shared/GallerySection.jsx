@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import {
-  AnimatePresence, motion, useMotionValue, useSpring, useTransform, useAnimationFrame,
+  AnimatePresence, motion, useMotionValue, useSpring,
 } from 'framer-motion';
 import {
   X, ChevronLeft, ChevronRight, Images,
@@ -225,32 +225,8 @@ export default function GallerySection() {
     touchResumeRef.current = setTimeout(() => setIsPaused(false), 1200);
   }
 
-  // ---- Progress-bar (rAF orqali, React state'ni har freymda qayta
-  // render qilmasdan — motion value orqali to'g'ridan-to'g'ri DOM'ga
-  // yoziladi, shu bilan mobilda ham silliq va yengil ishlaydi) ----
-  const progressValue = useMotionValue(0);
-  const progressWidth = useTransform(progressValue, (v) => `${v}%`);
-  const progressStartRef = useRef(null);
-  const progressElapsedRef = useRef(0);
-
-  useEffect(() => {
-    progressElapsedRef.current = 0;
-    progressStartRef.current = null;
-    progressValue.set(0);
-  }, [activeIndex, activeCategory, progressValue]);
-
-  useAnimationFrame((time) => {
-    if (isPaused || lightboxOpen || activeImages.length <= 1 || currentMediaType === 'video') {
-      progressStartRef.current = null;
-      return;
-    }
-    if (progressStartRef.current === null) {
-      progressStartRef.current = time - progressElapsedRef.current;
-    }
-    const elapsed = time - progressStartRef.current;
-    progressElapsedRef.current = elapsed;
-    progressValue.set(Math.min(100, (elapsed / AUTOPLAY_MS) * 100));
-  });
+  // Progress chizig'i CSS transform orqali ishlaydi. Bu har freymda JavaScript
+  // ishlatmaydi va ayniqsa mobil qurilmalarda ancha yengil.
 
   // ---- Fon gradientining "chuqurlik hissi beruvchi" crossfade animatsiyasi
   // Kategoriya almashganda ikkita qatlam bir-biriga o'tadi (opacity fade),
@@ -298,6 +274,19 @@ export default function GallerySection() {
     rotateYRaw.set(0);
     setIsPaused(false);
   }
+
+  // 50+ media bo'lganda barcha thumbnail rasmlarni birdan DOM'ga yuklamaymiz.
+  // Joriy slayd atrofidagi 11 tasi yetarli; qolganlari arrow/dot orqali ochiladi.
+  const thumbnailEntries = useMemo(() => {
+    if (activeImages.length <= 11) return activeImages.map((img, idx) => ({ img, idx }));
+    const radius = 5;
+    const entries = [];
+    for (let offset = -radius; offset <= radius; offset += 1) {
+      const idx = (activeIndex + offset + activeImages.length) % activeImages.length;
+      if (!entries.some((entry) => entry.idx === idx)) entries.push({ img: activeImages[idx], idx });
+    }
+    return entries;
+  }, [activeImages, activeIndex]);
 
   if (isLoading) {
     return (
@@ -385,7 +374,7 @@ export default function GallerySection() {
                 className="absolute inset-0"
               />
 
-              {!prefersReducedMotion && (
+              {!prefersReducedMotion && canTilt && (
                 <>
                   <motion.div
                     className="absolute -top-10 -left-10 w-72 h-72 md:w-96 md:h-96 rounded-full blur-2xl md:blur-3xl mix-blend-screen opacity-60 will-change-transform"
@@ -450,10 +439,6 @@ export default function GallerySection() {
                       muted
                       playsInline
                       autoPlay
-                      onTimeUpdate={(e) => {
-                        const v = e.currentTarget;
-                        if (v.duration) progressValue.set((v.currentTime / v.duration) * 100);
-                      }}
                       onEnded={() => goTo(activeIndex + 1)}
                       className="w-full h-full object-contain"
                     />
@@ -499,11 +484,13 @@ export default function GallerySection() {
               {/* Progress-chiziq — 2 soniyalik autoplay vaqtini real vaqtda ko'rsatadi */}
               {activeImages.length > 1 && (
                 <div className="absolute inset-x-0 top-0 h-1 bg-white/15 overflow-hidden z-10">
-                  <motion.div
-                    className="h-full origin-left"
+                  <div
+                    key={`progress-${activeCategory}-${activeIndex}`}
+                    className="gallery-progress h-full origin-left"
                     style={{
-                      width: progressWidth,
                       background: `linear-gradient(90deg, ${theme.blobs[0]}, ${theme.accentSolidHex})`,
+                      animationDuration: `${AUTOPLAY_MS}ms`,
+                      animationPlayState: isPaused || lightboxOpen ? 'paused' : 'running',
                     }}
                   />
                 </div>
@@ -549,7 +536,7 @@ export default function GallerySection() {
             {/* Miniatyura qatori — bevosita istalgan slaydga o'tish uchun */}
             {activeImages.length > 1 && (
               <div className="flex items-center justify-center gap-2 sm:gap-2.5 mt-5 overflow-x-auto no-scrollbar px-1 py-1">
-                {activeImages.map((img, idx) => {
+                {thumbnailEntries.map(({ img, idx }) => {
                   const isActive = idx === activeIndex;
                   return (
                     <button
@@ -577,7 +564,7 @@ export default function GallerySection() {
             {/* Nuqta-indikatorlar */}
             {activeImages.length > 1 && (
               <div className="flex items-center justify-center gap-1.5 mt-4">
-                {activeImages.map((img, idx) => (
+                {activeImages.length <= 15 ? activeImages.map((img, idx) => (
                   <button
                     key={img.id}
                     onClick={() => goTo(idx)}
@@ -587,7 +574,9 @@ export default function GallerySection() {
                       idx === activeIndex ? 'w-6' : 'w-1.5 bg-ink-900/20 hover:bg-ink-900/35'
                     }`}
                   />
-                ))}
+                )) : (
+                  <span className="text-xs font-semibold text-ink-900/55">{activeIndex + 1} / {activeImages.length}</span>
+                )}
               </div>
             )}
           </div>
