@@ -129,7 +129,10 @@ export default function CourseDetailPage() {
               )}
             </div>
 
-            <Button to="/test" className="w-full !justify-center">
+            <Button
+              to={course.subject === 'math' ? '/test?subject=math' : '/test?subject=english'}
+              className="w-full !justify-center"
+            >
               <CheckCircle2 className="w-4 h-4" />
               Darajangizni aniqlab, ariza qoldiring
             </Button>
