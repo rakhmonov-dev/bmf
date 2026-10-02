@@ -29,7 +29,7 @@ export default function ApplicationForm({ testResult = null, compact = false, on
   });
 
   useEffect(() => {
-    getCourses().then(setCourses).catch(() => {});
+    getCourses().then(setCourses).catch(() => { });
   }, []);
 
   async function handleSubmit(e) {
@@ -45,8 +45,12 @@ export default function ApplicationForm({ testResult = null, compact = false, on
         testScore: testResult?.score ?? null,
         determinedLevel: testResult?.determinedLevel || null,
       });
-      setIsSubmitted(true);
-      resetTest();
+      if (onClose) {
+        onClose();
+      } else {
+        setIsSubmitted(true);
+        resetTest();
+      }
     } catch (error) {
       toast.error(error.response?.data?.message || "Ariza yuborishda xatolik yuz berdi.");
     } finally {
