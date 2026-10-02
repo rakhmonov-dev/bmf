@@ -148,7 +148,7 @@ export default function ApplicationsPage() {
                   <td className="px-5 py-3.5">
                     {app.determined_level ? (
                       <span className="text-xs font-semibold text-gold-600 bg-gold-50 px-2.5 py-1 rounded-full">
-                        {CEFR_DISPLAY[app.determined_level]}
+                        {CEFR_DISPLAY[app.determined_level] || app.determined_level}
                       </span>
                     ) : '—'}
                   </td>

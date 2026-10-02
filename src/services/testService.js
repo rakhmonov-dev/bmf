@@ -1,13 +1,13 @@
 import api from './api';
 
 // ---------------------- PLACEMENT TEST ----------------------
-export async function getTestQuestions() {
-  const { data } = await api.get('/test/questions');
+export async function getTestQuestions(subject = 'english') {
+  const { data } = await api.get('/test/questions', { params: { subject } });
   return data.data;
 }
 
-export async function submitTest(answers) {
-  const { data } = await api.post('/test/submit', { answers });
+export async function submitTest(answers, subject = 'english') {
+  const { data } = await api.post('/test/submit', { answers, subject });
   return data.data; // { attemptId, score, maxScore, percentage, determinedLevel, levelBreakdown }
 }
 

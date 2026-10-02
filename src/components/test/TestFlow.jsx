@@ -20,16 +20,18 @@ import TestResultView from './TestResultView';
  * @param {Function} onClose - agar berilsa, yopish tugmasi ko'rsatiladi
  *   (Hero ichidagi modal holatida foydalanuvchi testni bekor qilishi uchun).
  */
-export default function TestFlow({ compact = false, onClose = null }) {
+export default function TestFlow({ compact = false, onClose = null, initialSubject = null }) {
   const [isLoadingQuestions, setIsLoadingQuestions] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loadError, setLoadError] = useState(false);
 
   const {
+    subject,
     questions,
     currentQuestionIndex,
     answers,
     result,
+    setSubject,
     setQuestions,
     answerQuestion,
     nextQuestion,
@@ -41,11 +43,26 @@ export default function TestFlow({ compact = false, onClose = null }) {
 
   useEffect(() => {
     resetTest();
-    getTestQuestions()
-      .then(setQuestions)
-      .catch(() => setLoadError(true))
-      .finally(() => setIsLoadingQuestions(false));
-  }, []);
+    if (initialSubject) {
+      chooseSubject(initialSubject);
+    } else {
+      setIsLoadingQuestions(false);
+    }
+  }, [initialSubject]);
+
+  async function chooseSubject(nextSubject) {
+    setSubject(nextSubject);
+    setIsLoadingQuestions(true);
+    setLoadError(false);
+    try {
+      const data = await getTestQuestions(nextSubject);
+      setQuestions(data);
+    } catch {
+      setLoadError(true);
+    } finally {
+      setIsLoadingQuestions(false);
+    }
+  }
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
@@ -60,13 +77,17 @@ export default function TestFlow({ compact = false, onClose = null }) {
 
     setIsSubmitting(true);
     try {
-      const result = await submitTest(getAnswersArray());
+      const result = await submitTest(getAnswersArray(), subject);
       setResult(result);
     } catch (error) {
       toast.error(error.response?.data?.message || "Test topshirishda xatolik yuz berdi.");
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  if (!subject && !isLoadingQuestions) {
+    return null;
   }
 
   if (isLoadingQuestions) {
@@ -92,6 +113,9 @@ export default function TestFlow({ compact = false, onClose = null }) {
 
   return (
     <div>
+      <div className="flex items-center justify-between mb-4">
+        <span className="text-xs font-semibold uppercase tracking-wide text-gold-600">{subject === 'math' ? 'Matematika' : 'English'}</span>
+      </div>
       <div className="mb-6">
         <TestProgressBar current={currentQuestionIndex} total={questions.length} />
       </div>

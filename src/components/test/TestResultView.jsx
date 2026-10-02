@@ -30,7 +30,7 @@ export default function TestResultView({ result, compact = false, onClose = null
           Test yakunlandi
         </div>
         <h1 className={`font-display font-semibold text-ink-900 mb-3 ${compact ? 'text-2xl' : 'text-3xl md:text-4xl'}`}>
-          Sizning darajangiz: {CEFR_DISPLAY[result.determinedLevel]}
+          Sizning darajangiz: {result.subject === 'math' ? result.determinedLevel : CEFR_DISPLAY[result.determinedLevel]}
         </h1>
         <p className="text-slate-500 text-sm">
           Siz {result.maxScore} savoldan {result.score} tasiga to'g'ri javob berdingiz
@@ -38,9 +38,17 @@ export default function TestResultView({ result, compact = false, onClose = null
         </p>
       </motion.div>
 
-      <div className={`bg-white rounded-2xl border border-slate-100 shadow-xl shadow-ink-900/5 ${compact ? 'p-5 md:p-6 mb-6' : 'p-8 md:p-12 mb-10'}`}>
-        <CefrFoundation highlightLevel={result.determinedLevel} compact={compact} />
-      </div>
+      {result.subject === 'math' ? (
+        <div className={`bg-white rounded-2xl border border-slate-100 shadow-xl shadow-ink-900/5 text-center ${compact ? 'p-5 md:p-6 mb-6' : 'p-8 md:p-12 mb-10'}`}>
+          <p className="text-sm text-slate-500 mb-2">Matematika bo'yicha tavsiya etilgan daraja</p>
+          <div className="text-4xl font-display font-semibold text-gold-600">{result.determinedLevel}</div>
+          <p className="text-xs text-slate-400 mt-3">Natija 5–11-sinf mavzularidagi javoblaringiz asosida hisoblandi.</p>
+        </div>
+      ) : (
+        <div className={`bg-white rounded-2xl border border-slate-100 shadow-xl shadow-ink-900/5 ${compact ? 'p-5 md:p-6 mb-6' : 'p-8 md:p-12 mb-10'}`}>
+          <CefrFoundation highlightLevel={result.determinedLevel} compact={compact} />
+        </div>
+      )}
 
       <div className="text-center">
         <button

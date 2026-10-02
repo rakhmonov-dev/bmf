@@ -7,10 +7,13 @@ import { create } from 'zustand';
  * bu qasddan, chunki test qayta boshlanishi kerak.
  */
 export const useTestStore = create((set, get) => ({
+  subject: null,
   questions: [],
   currentQuestionIndex: 0,
   answers: {}, // { questionId: 'a'|'b'|'c'|'d' }
   result: null, // { attemptId, score, maxScore, percentage, determinedLevel, levelBreakdown }
+
+  setSubject: (subject) => set({ subject, questions: [], currentQuestionIndex: 0, answers: {}, result: null }),
 
   setQuestions: (questions) => set({ questions, currentQuestionIndex: 0, answers: {}, result: null }),
 
@@ -46,5 +49,5 @@ export const useTestStore = create((set, get) => ({
 
   setResult: (result) => set({ result }),
 
-  resetTest: () => set({ questions: [], currentQuestionIndex: 0, answers: {}, result: null }),
+  resetTest: () => set({ subject: null, questions: [], currentQuestionIndex: 0, answers: {}, result: null }),
 }));

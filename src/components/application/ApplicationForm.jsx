@@ -100,7 +100,7 @@ export default function ApplicationForm({ testResult = null, compact = false, on
         <div className="bg-ink-900 rounded-2xl px-6 py-4 mb-6 flex items-center justify-between">
           <span className="text-slate-300 text-sm">Test natijasi</span>
           <span className="text-gold-400 font-display font-semibold">
-            {CEFR_DISPLAY[testResult.determinedLevel]}
+            {testResult.subject === 'math' ? testResult.determinedLevel : CEFR_DISPLAY[testResult.determinedLevel]}
           </span>
         </div>
       )}
