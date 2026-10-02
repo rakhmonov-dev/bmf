@@ -65,7 +65,7 @@ export default function CourseDetailPage() {
             </div>
             <div>
               <span className="inline-block text-xs font-semibold text-gold-300 bg-white/10 px-3 py-1 rounded-full mb-3">
-                {CEFR_DISPLAY[course.cefr_level_from]} — {CEFR_DISPLAY[course.cefr_level_to]}
+                {course.subject === 'math' ? `${course.grade_range || (course.grade_from && course.grade_to ? `${course.grade_from}–${course.grade_to}` : '')} sinf` : `${CEFR_DISPLAY[course.cefr_level_from]} — ${CEFR_DISPLAY[course.cefr_level_to]}`}
               </span>
               <h1 className="text-3xl md:text-4xl font-display font-semibold text-white text-balance">
                 {course.title}

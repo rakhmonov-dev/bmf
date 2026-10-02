@@ -15,6 +15,7 @@ const CEFR_OPTIONS = ['Boshlangich', 'A1', 'A2', 'B1', 'B2', 'C1'];
 const ICON_OPTIONS = ['BookOpen', 'MessageCircle', 'TrendingUp', 'Award', 'Briefcase', 'Smile', 'Globe', 'Mic'];
 
 const EMPTY_FORM = {
+  subject: 'english', gradeRange: '',
   title: '', description: '', cefrLevelFrom: 'A1', cefrLevelTo: 'A2',
   durationMonths: 6, lessonsPerWeek: 3, priceAmount: '', originalPrice: '', pricePeriod: 'oylik',
   groupSizeMax: '', iconName: 'BookOpen', teacherId: '', isActive: true,
@@ -55,6 +56,8 @@ export default function CoursesAdminPage() {
   function openEditModal(course) {
     setEditingCourse(course);
     setFormData({
+      subject: course.subject || 'english',
+      gradeRange: course.grade_range || (course.grade_from && course.grade_to ? `${course.grade_from}-${course.grade_to}` : ''),
       title: course.title,
       description: course.description,
       cefrLevelFrom: course.cefr_level_from,
@@ -143,7 +146,7 @@ export default function CoursesAdminPage() {
             <div key={course.id} className="bg-white rounded-2xl border border-slate-100 p-5">
               <div className="flex items-start justify-between mb-3">
                 <span className="text-xs font-semibold text-gold-600 bg-gold-50 px-2.5 py-1 rounded-full">
-                  {CEFR_DISPLAY[course.cefr_level_from]} — {CEFR_DISPLAY[course.cefr_level_to]}
+                  {course.subject === 'math' ? `${course.grade_range || (course.grade_from && course.grade_to ? `${course.grade_from}–${course.grade_to}` : '')} sinf` : `${CEFR_DISPLAY[course.cefr_level_from]} — ${CEFR_DISPLAY[course.cefr_level_to]}`}
                 </span>
                 {!course.is_active && (
                   <span className="text-xs font-medium text-slate-400 bg-slate-100 px-2.5 py-1 rounded-full">
@@ -178,6 +181,24 @@ export default function CoursesAdminPage() {
         maxWidth="max-w-2xl"
       >
         <form onSubmit={handleSave} className="flex flex-col gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <FormField label="Fan">
+              <select value={formData.subject} onChange={(e) => setFormData((p) => ({ ...p, subject: e.target.value, gradeRange: e.target.value === 'math' ? (p.gradeRange || '5-7') : '' }))} className="input-base">
+                <option value="english">English</option>
+                <option value="math">Matematika</option>
+              </select>
+            </FormField>
+            {formData.subject === 'math' && (
+              <FormField label="Sinf oralig'i">
+                <select value={formData.gradeRange || '5-7'} onChange={(e) => setFormData((p) => ({ ...p, gradeRange: e.target.value }))} className="input-base">
+                  <option value="5-7">5–7-sinf</option>
+                  <option value="8-9">8–9-sinf</option>
+                  <option value="10-11">10–11-sinf</option>
+                </select>
+              </FormField>
+            )}
+          </div>
+
           <FormField label="Kurs nomi *">
             <input
               required
@@ -197,7 +218,7 @@ export default function CoursesAdminPage() {
             />
           </FormField>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {formData.subject === 'english' && (<div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <FormField label="Boshlang'ich daraja">
               <select
                 value={formData.cefrLevelFrom}
@@ -216,7 +237,7 @@ export default function CoursesAdminPage() {
                 {CEFR_OPTIONS.map((lvl) => <option key={lvl} value={lvl}>{CEFR_DISPLAY[lvl]}</option>)}
               </select>
             </FormField>
-          </div>
+          </div>)}
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <FormField label="Davomiyligi (oy)">

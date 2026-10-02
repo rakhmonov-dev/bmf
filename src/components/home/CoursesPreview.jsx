@@ -53,7 +53,7 @@ export default function CoursesPreview() {
                 </div>
 
                 <span className="inline-block text-xs font-semibold text-gold-600 bg-gold-50 px-2.5 py-1 rounded-full mb-3">
-                  {course.cefr_level_from} — {course.cefr_level_to}
+                  {course.subject === 'math' ? `${course.grade_range || (course.grade_from && course.grade_to ? `${course.grade_from}–${course.grade_to}` : '')} sinf` : `${course.cefr_level_from} — ${course.cefr_level_to}`}
                 </span>
 
                 <h3 className="font-display font-semibold text-xl text-ink-900 mb-2">
